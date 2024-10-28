@@ -62,3 +62,12 @@ This Django-based module manages subscriptions with MIPS as the payment gateway.
 This guide provides:
 - **Isolated environment for the module**, preventing dependency conflicts.
 - **Multiple payment options** with Stripe, Internet Banking, and MCB Juice.
+
+## Explanation of Additional Tests
+-Manual Payment Update: Verifies that admins can manually update the payment status for "Juice MCB".
+-MIPS Payment Success: Simulates successful payments made through MIPS and ensures the status is updated.
+-Subscription Activation on Successful Payment: Ensures that the subscription is activated once payment is successful.
+-Subscription Renewal and Completion: Checks the transition from active to renewing and back to active.
+-Recurring Payment Option: Tests that a subscription can be marked as recurring and handles subsequent successful payments.
+-Standing Order Manual Confirmation: Simulates standing order payments that need manual confirmation.
+-Expired Subscription Notification: Checks if the subscription status is set to expired when the end date passes.

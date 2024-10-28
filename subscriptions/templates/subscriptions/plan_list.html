@@ -1,10 +1,18 @@
 <h1>Available Subscription Plans</h1>
-<ul>
-{% for plan in plans %}
-    <li>
-        <h2>{{ plan.name }}</h2>
-        <p>{{ plan.description }}</p>
-        <a href="{% url 'subscribe' plan.id %}">Subscribe</a>
-    </li>
-{% endfor %}
-</ul>
+<form method="post">
+  {% csrf_token %}
+  <ul>
+  {% for plan in plans %}
+      <li>
+          <h2>{{ plan.name }}</h2>
+          <p>{{ plan.description }}</p>
+          <p>Price: {{ plan.price }}</p>
+          <label for="is_recurring_{{ plan.id }}">
+              <input type="checkbox" name="is_recurring" value="True" id="is_recurring_{{ plan.id }}">
+              Enable Recurring Payment
+          </label>
+          <button type="submit" formaction="{% url 'subscribe' plan.id %}">Subscribe</button>
+      </li>
+  {% endfor %}
+  </ul>
+</form>
