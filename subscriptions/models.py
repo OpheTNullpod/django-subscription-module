@@ -2,6 +2,10 @@ from django.conf import settings
 from django.db import models
 from django_fsm import FSMField, transition
 from django.utils import timezone
+from django.contrib.auth import get_user_model
+
+# Get user model dynamically
+User = get_user_model()
 
 # Define payment methods and statuses
 PAYMENT_METHODS = (
@@ -9,6 +13,7 @@ PAYMENT_METHODS = (
     ('internet_banking', 'Internet Banking'),
     ('juice_mcb', 'Juice MCB'),
     ('standing_order', 'Standing Order'),
+    ('paypal', 'PayPal'),
 )
 
 PAYMENT_STATUSES = (
@@ -37,10 +42,9 @@ class Plan(models.Model):
 
 class Subscription(models.Model):
     """Tracks user subscriptions."""
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
     status = FSMField(default='inactive', choices=SUBSCRIPTION_STATUSES)
-
     start_date = models.DateTimeField(null=True, blank=True)
     end_date = models.DateTimeField(null=True, blank=True)
     is_recurring = models.BooleanField(default=False)  # Recurring payment option
@@ -69,10 +73,10 @@ class Subscription(models.Model):
 
 class Payment(models.Model):
     """Handles payments for subscriptions."""
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHODS)
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHODS, default='paypal')
     status = models.CharField(max_length=25, choices=PAYMENT_STATUSES, default='pending')
     payment_date = models.DateTimeField(auto_now_add=True)
     transaction_reference = models.CharField(max_length=100, blank=True, null=True)

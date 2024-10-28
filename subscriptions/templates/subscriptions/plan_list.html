@@ -1,18 +1,28 @@
+{% extends 'subscriptions/base.html' %}
+
+{% block title %}Available Subscription Plans{% endblock %}
+
+{% block content %}
 <h1>Available Subscription Plans</h1>
-<form method="post">
-  {% csrf_token %}
-  <ul>
+
+<ul class="plan-list">
   {% for plan in plans %}
-      <li>
-          <h2>{{ plan.name }}</h2>
-          <p>{{ plan.description }}</p>
-          <p>Price: {{ plan.price }}</p>
-          <label for="is_recurring_{{ plan.id }}">
-              <input type="checkbox" name="is_recurring" value="True" id="is_recurring_{{ plan.id }}">
-              Enable Recurring Payment
-          </label>
-          <button type="submit" formaction="{% url 'subscribe' plan.id %}">Subscribe</button>
-      </li>
+    <li>
+      <h2>{{ plan.name }}</h2>
+      <p>Price: ${{ plan.price }}</p>
+
+      <form method="post" action="{% url 'subscribe' plan.id %}">
+        {% csrf_token %}
+        <label>
+          <input type="checkbox" name="is_recurring">
+          Make this subscription recurring
+        </label>
+        <button type="submit">Subscribe</button>
+      </form>
+
+      <!-- PayPal Payment Button -->
+      {% include 'subscriptions/_payment_form.html' with plan=plan %}
+    </li>
   {% endfor %}
-  </ul>
-</form>
+</ul>
+{% endblock %}

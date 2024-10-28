@@ -1,4 +1,10 @@
+{% extends 'subscriptions/base.html' %}
+
+{% block title %}Manage Subscription{% endblock %}
+
+{% block content %}
 <h1>Manage Subscription</h1>
+
 {% if subscription %}
     <p>You are subscribed to {{ subscription.plan.name }} until {{ subscription.end_date }}</p>
     <form method="post">
@@ -8,3 +14,4 @@
 {% else %}
     <p>You have no active subscriptions.</p>
 {% endif %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'subscriptions/base.html' %}
+
+{% block title %}Payment Confirmation{% endblock %}
+
+{% block content %}
+<h1>Payment Confirmation</h1>
+
+{% if payment_successful %}
+  <p>Thank you for your payment! Your subscription is now active.</p>
+  <a href="{% url 'manage_subscription' %}">Manage Your Subscription</a>
+{% else %}
+  <p>Payment failed or was canceled. Please try again.</p>
+  <a href="{% url 'plan_list' %}">Return to Plans</a>
+{% endif %}
+{% endblock %}
