@@ -1,0 +1,10 @@
+<h1>Available Subscription Plans</h1>
+<ul>
+{% for plan in plans %}
+    <li>
+        <h2>{{ plan.name }}</h2>
+        <p>{{ plan.description }}</p>
+        <a href="{% url 'subscribe' plan.id %}">Subscribe</a>
+    </li>
+{% endfor %}
+</ul>

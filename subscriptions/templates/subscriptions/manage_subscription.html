@@ -1,0 +1,10 @@
+<h1>Manage Subscription</h1>
+{% if subscription %}
+    <p>You are subscribed to {{ subscription.plan.name }} until {{ subscription.end_date }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="renew">Renew Subscription</button>
+    </form>
+{% else %}
+    <p>You have no active subscriptions.</p>
+{% endif %}
